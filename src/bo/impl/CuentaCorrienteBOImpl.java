@@ -11,10 +11,17 @@ import entities.CuentaCorriente;
 public class CuentaCorrienteBOImpl {
 	
 	private CuentaCorrienteDAO ctaCtesDAO = new CuentaCorrienteDAOImpl();
-	private List<CuentaCorriente> ctasCtes = new ArrayList<CuentaCorriente>();;
+	private List<CuentaCorriente> ctasCtes = new ArrayList<CuentaCorriente>();
 
 	public List<CuentaCorriente> listarCuentasCorrientes() {
 		return ctaCtesDAO.listarCuentaCorrienteDAO();
 	}
 
+	public void guardarCuentaCorriente(CuentaCorriente cuentaCorriente){
+		this.ctaCtesDAO.guardarCuentaCorriente(cuentaCorriente);
+	}
+
+	public void borrarCuentaCorriente(Integer id){
+		this.ctaCtesDAO.borrarCuentaCorriente(id);
+	}
 }

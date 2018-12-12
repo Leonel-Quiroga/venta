@@ -68,4 +68,14 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 		return ctaCte;
 	}
 
+	@Override
+	public void guardarCuentaCorriente(CuentaCorriente cuentaCorriente) {
+		dao.grabar(cuentaCorriente);
+	}
+
+	@Override
+	public void borrarCuentaCorriente(Integer id) {
+		this.dao.borrarPorId( CuentaCorriente.class, id);
+	}
+
 }

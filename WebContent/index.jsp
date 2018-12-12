@@ -64,19 +64,26 @@
 					class="app-menu__label">Stock</span><i
 					class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="bootstrap-components.html"><i
-							class="icon fa fa-circle-o"></i> Bootstrap Elements</a></li>
+					<li><a class="treeview-item" href="AltaProducto"><i
+							class="icon fa fa-circle-o"></i>Alta Producto</a></li>
 					<li><a class="treeview-item"
-						href="https://fontawesome.com/v4.7.0/icons/" target="_blank"
-						rel="noopener"><i class="icon fa fa-circle-o"></i> Font Icons</a></li>
+						href="listaProductos"
+						rel="noopener"><i class="icon fa fa-circle-o"></i> Lista de productos</a></li>
 					<li><a class="treeview-item" href="ui-cards.html"><i
 							class="icon fa fa-circle-o"></i> Cards</a></li>
-					<li><a class="treeview-item" href="widgets.html"><i
-							class="icon fa fa-circle-o"></i> Widgets</a></li>
 				</ul></li>
-			<li><a class="app-menu__item" href="charts.html"><i
-					class="app-menu__icon fa fa-users" aria-hidden="true"></i><span
-					class="app-menu__label">Ctas. Ctes.</span></a></li>
+			<li class="treeview"><a class="app-menu__item" href="#"
+									data-toggle="treeview"><i
+					class="app-menu__icon fa fa-shopping-cart" aria-hidden="true"></i><span
+					class="app-menu__label">Cuentas Corrientes</span><i
+					class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a class="treeview-item" href="formularioCtaCorriente"><i
+							class="icon fa fa-circle-o"></i>Alta Cuenta Corriente</a></li>
+					<li><a class="treeview-item"
+						   href="listaCtaCorrientes"
+						   rel="noopener"><i class="icon fa fa-circle-o"></i> Lista de Ctas Corrientes</a></li>
+				</ul></li>
 			<li class="treeview"><a class="app-menu__item" href="#"
 				data-toggle="treeview"><i
 					class="app-menu__icon fa fa-file-text-o" aria-hidden="true"></i><span
@@ -110,23 +117,23 @@
 						<s:form>
 							<div class="row">
 								<div class="col-md-4">
-									
+
 										  <s:select cssClass="form-control line" onselect="" headerKey="-1"
 													headerValue="Seleccionar Cta Cte" list="listCtasCtes"
 													listKey="idCuentaCorriente" listValue="apellido + ' ' + nombre"
 													name="listCtasCtes.idCuentaCorriente" >
-										   
+
 										  </s:select>
-									
-								</div>								
+
+								</div>
 								<div class="col-md-3">
 									<div class="dropdown">
 										  <s:select  cssClass="form-control line" onselect="" headerKey="-1"
 													headerValue="Seleccionar producto" list="listProductos"
 													listKey="idProducto" listValue="nombre"
 													name="listProductos.idProducto"  />
-										    
-										  
+
+
 										  <div class="dropdown-menu">
 										    <a class="dropdown-item" href="#">Link 1</a>
 										  </div>
@@ -141,10 +148,10 @@
 								   Agregar producto
 								  </button>
 							    </div>
-							    
+
 							</div>
 						</div>
-						
+
 							<div class="row">
 								<table class="table">
 									<thead>
@@ -165,14 +172,14 @@
 									</tbody>
 								</table>
 							</div>
-						<div class="row">								
-							<div class="col-md-12 text-right">								
+						<div class="row">
+							<div class="col-md-12 text-right">
 							  <button type="button" class="btn btn-primary">
 							    Cancelar
-							  </button>	&nbsp;						
+							  </button>	&nbsp;
 							  <button type="button" class="btn btn-primary">
 							    Finalizar venta
-							  </button>							
+							  </button>
 							</div>
 						</div>
 						</s:form>

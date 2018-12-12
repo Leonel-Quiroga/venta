@@ -14,5 +14,13 @@ public class ProductoBOImpl {
 	public List<Producto> listarProductos() {
 		return productoDAO.listarProductosDAO();
 	}
+
+	public void guardarProducto(Producto producto){
+		productoDAO.guardarProducto(producto);
+	}
+
+	public void borrarProducto(Integer id){
+		productoDAO.borrarProducto(id);
+	}
 	
 }

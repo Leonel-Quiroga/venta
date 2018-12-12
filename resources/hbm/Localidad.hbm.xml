@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="entities.Localidad" table="localidades">
+        <id name="idLocalidad" type="java.lang.Integer">
+            <column name="idlocalidad" sql-type="Integer" not-null="true" />
+            <generator class="increment"/>
+        </id>
+        <property name="denominacion" type="java.lang.String">
+            <column name="denominacion" sql-type="varchar(15)" not-null="true" />
+        </property>
+        <property name="codigoPostal" type="java.lang.Integer">
+            <column name="codigo_postal" sql-type="Integer" not-null="true" />
+        </property>
+
+    </class>
+</hibernate-mapping>
