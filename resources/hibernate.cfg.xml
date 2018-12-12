@@ -7,7 +7,7 @@
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/ventas</property>
 		<property name="hibernate.connection.username">postgres</property>
-		<property name="hibernate.connection.password">35225542</property>
+		<property name="hibernate.connection.password">123psql</property>
 		<property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
 		<property name="hibernate.cache.region_prefix">hibernate.test</property>
 		<property name="hibernate.connection.pool_size">1</property>
@@ -41,6 +41,7 @@
 		<mapping resource="hbm/Usuario.hbm.xml"/>
 		<mapping resource="hbm/CuentaCorriente.hbm.xml"/>
 		<mapping resource="hbm/Producto.hbm.xml"/>
+	 	<mapping resource="hbm/Localidad.hbm.xml"/>
 
  </session-factory>  
 </hibernate-configuration>  

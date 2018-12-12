@@ -40,4 +40,14 @@ public class ProductoDAOImpl implements ProductoDAO {
 		return prouctos;
 	}
 
+	@Override
+	public void guardarProducto(Producto producto) {
+		this.dao.grabar(producto);
+	}
+
+	@Override
+	public void borrarProducto(Integer id) {
+		this.dao.borrarPorId(Producto.class, id);
+	}
+
 }

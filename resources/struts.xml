@@ -33,6 +33,46 @@
 			<result name="success" >index.jsp</result>
 			<result name="error">vistas/login.jsp</result>
 		</action>
+		<!--actions cuenta corriente-->
+		<action name="altaCtasCtes" method="guardarCtaCorriente" class="actions.CuentasCorrientesAction">
+			<result name="success" type="redirect" >listaCtaCorrientes</result>
+			<result name="error">listarCtasCorrientes.jsp</result>
+		</action>
+
+		<action name="formularioCtaCorriente" method="input" class="actions.CuentasCorrientesAction">
+			<result name="success" >altaCtaCorriente.jsp</result>
+		</action>
+
+		<action name="listaCtaCorrientes" method="listaCtaCorrientes" class="actions.CuentasCorrientesAction" >
+			<result name="success">listarCtasCorrientes.jsp</result>
+		</action>
+
+		<action name="borrarCtaCorriente" method="borrarCtaCorriente" class="actions.CuentasCorrientesAction">
+			<result name="success" type="redirect">listaCtaCorrientes</result>
+		</action>
+		<!--actions productos-->
+		<action name="listaProductos" method="listaProductos" class="actions.ProductosAction">
+			<result name="success">listaProductos.jsp</result>
+		</action>
+
+		<action name="AltaProducto" method="input" class="actions.ProductosAction">
+			<result name="success">altaProducto.jsp</result>
+		</action>
+
+		<action name="guardarProducto" method="guardarProducto" class="actions.ProductosAction">
+			<result name="success" type="redirect">listaProductos</result>
+			<result name="error" type="redirect">login</result>
+		</action>
+
+		<action name="borrarProducto" method="borrarProducto" class="actions.ProductosAction" >
+			<result name="success" type="redirect">listaProductos</result>
+		</action>
+		
+		<action name="editarProducto" method="editarProducto" class="actions.ProductosAction">
+			<result name="success" type="redrect">listaProductos</result>
+		</action>
+
+
 		
 <!-- 		<action name="logout" method="logout" class="ventas.Action.LoginAction"> -->
 <!-- 			<interceptor-ref name="defaultStack" /> -->
