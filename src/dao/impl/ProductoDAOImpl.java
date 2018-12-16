@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import dao.DAO;
 import dao.ProductoDAO;
@@ -39,5 +41,34 @@ public class ProductoDAOImpl implements ProductoDAO {
 		}
 		return prouctos;
 	}
+
+	@Override
+	public Producto getProductoById(Integer id) {
+		Session s = dao.getSession();
+		Transaction tx = s.getTransaction();
+		Producto p = new Producto();
+		try {
+			Criteria c = s.createCriteria(Producto.class);
+			c.add(Restrictions.eq("idProducto", id));
+			p = (Producto) c.uniqueResult();
+		} catch (Exception e) {
+			log.error(e);
+			e.printStackTrace();
+		} finally {
+			dao.cerrarSession();
+		}
+		return p;
+	}
+	
+	@Override
+	public void guardarProducto(Producto producto) {
+		this.dao.grabar(producto);
+	}
+
+	@Override
+	public void borrarProducto(Integer id) {
+		this.dao.borrarPorId(Producto.class, id);
+	}
+	
 
 }

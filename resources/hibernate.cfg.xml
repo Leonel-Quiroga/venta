@@ -41,6 +41,7 @@
 		<mapping resource="hbm/Usuario.hbm.xml"/>
 		<mapping resource="hbm/CuentaCorriente.hbm.xml"/>
 		<mapping resource="hbm/Producto.hbm.xml"/>
+		<mapping resource="hbm/Localidad.hbm.xml"/>
 
  </session-factory>  
 </hibernate-configuration>  

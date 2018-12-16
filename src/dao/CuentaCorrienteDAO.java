@@ -7,5 +7,7 @@ import entities.CuentaCorriente;
 public interface CuentaCorrienteDAO {
 	
 	public List<CuentaCorriente> listarCuentaCorrienteDAO();
-	public String getCtaCteId(Integer idCuentaCorriente);
+	public CuentaCorriente getCtaCteById(Integer idCuentaCorriente);
+	public void guardarCuentaCorriente(CuentaCorriente cuentaCorriente);
+	public void borrarCuentaCorriente(Integer id);
 }

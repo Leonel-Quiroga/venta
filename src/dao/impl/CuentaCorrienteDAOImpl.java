@@ -15,8 +15,6 @@ import dao.CuentaCorrienteDAO;
 import dao.DAO;
 import entities.CuentaCorriente;
 
-
-
 public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 	public DAO<CuentaCorriente> dao = new DAO<CuentaCorriente>();
 	private static Logger log = Logger.getLogger(CuentaCorrienteDAOImpl.class);
@@ -32,7 +30,6 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 	public static Logger getLog() {
 		return log;
 	}
-
 
 	public List<CuentaCorriente> listarCuentaCorrienteDAO() {
 		Session s = dao.getSession();
@@ -51,21 +48,30 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 		return ctasCtes;
 	}
 
-	public String getCtaCteId(Integer idCuentaCorriente) {
+	public CuentaCorriente getCtaCteById(Integer idCuentaCorriente) {
 		Session s = dao.getSession();
 		Transaction tx = s.getTransaction();
 		Criteria c = s.createCriteria(CuentaCorriente.class);
-		String ctaCte = null;
+		CuentaCorriente ctaCte = null;
 		try {
 			c.add(Restrictions.eq("idCuentaCorriente", idCuentaCorriente));
-			c.setProjection(Projections.property("apellido"));
-			ctaCte = (String) c.uniqueResult();
+			ctaCte =  (CuentaCorriente) c.uniqueResult();
 		} catch (Exception e) {
 			tx.rollback();
 		} finally {
 			dao.cerrarSession();
 		}
 		return ctaCte;
+	}
+	
+	@Override
+	public void guardarCuentaCorriente(CuentaCorriente cuentaCorriente) {
+		dao.grabar(cuentaCorriente);
+	}
+
+	@Override
+	public void borrarCuentaCorriente(Integer id) {
+		this.dao.borrarPorId( CuentaCorriente.class, id);
 	}
 
 }
