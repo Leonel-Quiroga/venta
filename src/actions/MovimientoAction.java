@@ -13,7 +13,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import bo.impl.CuentaCorrienteBOImpl;
 import bo.impl.MovimientoBOImpl;
 import bo.impl.ProductoBOImpl;
-import dto.CuentaCorrienteDTO;
 import dto.DetalleFacturaDTO;
 import entities.CuentaCorriente;
 import entities.Producto;
@@ -23,26 +22,31 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 
 	private static final long serialVersionUID = 2026769441835470521L;
 	private Map<String, Object> sesion;
+	
+	private int idProducto, cantidad;
+	private Integer idCuentaCorriente;
+	private Usuario usuario = new Usuario();
+	private Producto producto = new Producto();
+	private CuentaCorriente ctaCte = new CuentaCorriente();
+	private String validaciones;
+	
+	
 	private List<CuentaCorriente> listCtasCtes = new ArrayList<CuentaCorriente>();
 	private List<Producto> listProductos = new ArrayList<Producto>();
 	private List<DetalleFacturaDTO> movimientoDetalle = new ArrayList<DetalleFacturaDTO>();
-	private Producto producto = new Producto();
-	private CuentaCorriente ctaCte = new CuentaCorriente();
+
 	private DetalleFacturaDTO productoDTO = new DetalleFacturaDTO();
+	
 	private ProductoBOImpl productoBO = new ProductoBOImpl();
 	private CuentaCorrienteBOImpl ctasCtesBO = new CuentaCorrienteBOImpl();
-	private Usuario usuario = new Usuario();
-	private int idProducto, cantidad;
-	private Integer idCuentaCorriente;
 	private MovimientoBOImpl movimientoBO = new MovimientoBOImpl();
-	//e = erease;
+	
+	//e = erase;
 	private boolean e;
 
 	public String execute() {
 		if(e){
-			sesion.remove("idCuentaCorriente");
-			sesion.remove("detalleVenta");
-			sesion.remove("totalesFactura");
+			sesion.clear();
 			e=!e;
 		}
 		cargarCtasCtes();
@@ -51,10 +55,17 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 		return SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String agregarProducto() {
 		if (sesion.containsKey("detalleVenta"))
 			movimientoDetalle = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
-			
+		
+		if (sesion.containsKey("detalleVenta")) {
+			this.setValidaciones("El producto ya se encuentra en lista");
+			return ERROR;
+		}
+		
+
 		producto = productoBO.getProductoByIdBO(idProducto);
 		ctaCte = ctasCtesBO.getCuentaCorrienteByIdBO(idCuentaCorriente);
 		
@@ -105,6 +116,12 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 		listProductos = productoBO.listarProductos();
 	}
 
+	
+	
+	
+	
+	
+	
 	public List<Producto> getListProductos() {
 		return listProductos;
 	}
@@ -212,6 +229,14 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 
 	public void setE(boolean e) {
 		this.e = e;
+	}
+
+	public String getValidaciones() {
+		return validaciones;
+	}
+
+	public void setValidaciones(String validaciones) {
+		this.validaciones = validaciones;
 	}
 
 }

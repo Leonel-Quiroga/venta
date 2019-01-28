@@ -8,7 +8,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import dao.CuentaCorrienteDAO;
@@ -31,9 +30,9 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 		return log;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<CuentaCorriente> listarCuentaCorrienteDAO() {
 		Session s = dao.getSession();
-		Transaction tx = s.getTransaction();
 		List<CuentaCorriente> ctasCtes = new ArrayList<CuentaCorriente>();
 		try {
 			Criteria c = s.createCriteria(CuentaCorriente.class);
@@ -55,7 +54,7 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 		CuentaCorriente ctaCte = null;
 		try {
 			c.add(Restrictions.eq("idCuentaCorriente", idCuentaCorriente));
-			ctaCte =  (CuentaCorriente) c.uniqueResult();
+			ctaCte = (CuentaCorriente) c.uniqueResult();
 		} catch (Exception e) {
 			tx.rollback();
 		} finally {
@@ -63,7 +62,7 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 		}
 		return ctaCte;
 	}
-	
+
 	@Override
 	public void guardarCuentaCorriente(CuentaCorriente cuentaCorriente) {
 		dao.grabar(cuentaCorriente);
@@ -71,7 +70,7 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 
 	@Override
 	public void borrarCuentaCorriente(Integer id) {
-		this.dao.borrarPorId( CuentaCorriente.class, id);
+		this.dao.borrarPorId(CuentaCorriente.class, id);
 	}
 
 }

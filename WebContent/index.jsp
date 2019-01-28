@@ -106,8 +106,8 @@
 					<div class="tile-body">
 						<div class="col-md-12">
 							<s:form action="facturar">
-								<div id="no-stock"class="alert alert-danger" role="alert" style="visibility: hidden">
-								  No hay Stock Suficiente!
+								<div id="no-stock" class="alert alert-danger" role="alert" style="visibility: hidden">
+								  <s:property value="session.validaciones" />
 								</div>
 								<div class="row">
 									<div class="col-md-4">									
