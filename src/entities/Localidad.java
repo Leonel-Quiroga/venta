@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class Localidad implements Serializable {
 
-    private Integer idLocalidad;
+	private static final long serialVersionUID = -4637353138074637489L;
+	private Integer idLocalidad;
     private String denominacion;
     private Integer codigoPostal;
 

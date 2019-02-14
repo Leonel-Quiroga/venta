@@ -32,7 +32,7 @@
 <body class="app sidebar-mini rtl">
 	<!-- Navbar-->
 	<header class="app-header">
-		<a class="app-header__logo" href="index.html">VENTA</a>
+		<a class="app-header__logo" href="cargarCtasCtes">VENTA</a>
 		<!-- Sidebar toggle button-->
 		<a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
 			aria-label="Hide Sidebar"></a>
@@ -45,20 +45,24 @@
 						value="#session.usuario.apellido" /> &nbsp; <s:property
 						value="#session.usuario.nombre" /> </a>
 				<ul class="dropdown-menu settings-menu dropdown-menu-right">
-					<li><a class="dropdown-item" href="page-login.html"> <i
-							class="fa fa-sign-out fa-lg"></i> Salir
+					<li><a class="dropdown-item" href="logout"> <i
+							class="fa fa-sign-out fa-lg"></i> <s:text name="Salir" />
 					</a></li>
 				</ul></li>
 		</ul>
 	</header>
+	
 	<!-- Sidebar menu-->
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 	<aside class="app-sidebar">
 		<ul class="app-menu">
-			<li><a class="app-menu__item active" href="index.html"><i
-					class="app-menu__icon fa fa-barcode" aria-hidden="true"></i><span
-					class="app-menu__label">Facturación</span></a></li>
-			<li class="treeview"><a class="app-menu__item" href="#"
+			<li>
+				<a class="app-menu__item active" href="cargarCtasCtes?e=true">
+					<i class="app-menu__icon fa fa-barcode" aria-hidden="true"></i>
+					<span class="app-menu__label">Facturación</span>
+				</a>
+			</li>
+<li class="treeview"><a class="app-menu__item" href="#"
 				data-toggle="treeview"><i
 					class="app-menu__icon fa fa-shopping-cart" aria-hidden="true"></i><span
 					class="app-menu__label">Stock</span><i
@@ -69,8 +73,6 @@
 					<li><a class="treeview-item"
 						href="listaProductos"
 						rel="noopener"><i class="icon fa fa-circle-o"></i> Lista de productos</a></li>
-					<li><a class="treeview-item" href="ui-cards.html"><i
-							class="icon fa fa-circle-o"></i> Cards</a></li>
 				</ul></li>
 			<li class="treeview"><a class="app-menu__item" href="#"
 									data-toggle="treeview"><i
@@ -84,116 +86,147 @@
 						   href="listaCtaCorrientes"
 						   rel="noopener"><i class="icon fa fa-circle-o"></i> Lista de Ctas Corrientes</a></li>
 				</ul></li>
-			<li class="treeview"><a class="app-menu__item" href="#"
-				data-toggle="treeview"><i
-					class="app-menu__icon fa fa-file-text-o" aria-hidden="true"></i><span
-					class="app-menu__label">Reportes</span><i
-					class="treeview-indicator fa fa-angle-right"></i></a>
-				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="form-components.html"><i
-							class="icon fa fa-circle-o"></i> Form Components</a></li>
-					<li><a class="treeview-item" href="form-custom.html"><i
-							class="icon fa fa-circle-o"></i> Custom Components</a></li>
-					<li><a class="treeview-item" href="form-samples.html"><i
-							class="icon fa fa-circle-o"></i> Form Samples</a></li>
-					<li><a class="treeview-item" href="form-notifications.html"><i
-							class="icon fa fa-circle-o"></i> Form Notifications</a></li>
-				</ul></li>
+			<li class="treeview">
+				<a class="app-menu__item" href="#" data-toggle="treeview">
+					<i class="app-menu__icon fa fa-file-text-o" aria-hidden="true"></i>
+					<span class="app-menu__label">Reportes</span>
+				</a>
 		</ul>
 	</aside>
+	
 	<main class="app-content">
-	<div class="app-title">
-		<div>
-			<h1>
-				<i class="fa fa-barcode" aria-hidden="true"></i> &nbsp; FACTURACIÓN
-			</h1>
+		<div class="app-title">
+			<div>
+				<h1><i class="fa fa-barcode" aria-hidden="true"></i> &nbsp; FACTURACIÓN</h1>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="tile">
-				<div class="tile-body">
-					<div class="col-md-12">
-						<s:form>
-							<div class="row">
-								<div class="col-md-4">
-
+	
+			<div class="col-md-12">
+				<div class="tile">
+					<div class="tile-body">
+						<div class="col-md-12">
+							<s:form action="facturar">
+								<div id="no-stock" class="alert alert-danger" role="alert" style="visibility: hidden">
+								  <s:property value="session.validaciones" />
+								</div>
+								<div class="row">
+									<div class="col-md-4">									
 										  <s:select cssClass="form-control line" onselect="" headerKey="-1"
 													headerValue="Seleccionar Cta Cte" list="listCtasCtes"
 													listKey="idCuentaCorriente" listValue="apellido + ' ' + nombre"
-													name="listCtasCtes.idCuentaCorriente" >
-
-										  </s:select>
-
+													name="listCtasCtes.idCuentaCorriente" id="idCuentaCorriente"/>			   					  									
+									</div>								
+									<div class="col-md-3">
+										<div class="dropdown">
+											  <s:select cssClass="form-control line" onselect="" headerKey="-1"
+														headerValue="Seleccionar producto" list="listProductos"
+														listKey="idProducto" listValue="nombre"
+														name="listProductos.idProducto" id="producto" />
+										</div>
+									</div>
+									&nbsp;
+									<div class="col-md-1">
+										 <s:textfield name="Cantidad"  placeholder="Cantidad" cssClass="form-control" id="cantidad" type="text" ></s:textfield>
+								    </div>
+								    <div class="col-md-2">
+								 	  <button type="button" class="btn btn-primary btn-block" onclick="agregarProducto();">
+									   Agregar producto
+									  </button>
+								    </div>
+								    
 								</div>
-								<div class="col-md-3">
-									<div class="dropdown">
-										  <s:select  cssClass="form-control line" onselect="" headerKey="-1"
-													headerValue="Seleccionar producto" list="listProductos"
-													listKey="idProducto" listValue="nombre"
-													name="listProductos.idProducto"  />
-
-
-										  <div class="dropdown-menu">
-										    <a class="dropdown-item" href="#">Link 1</a>
-										  </div>
+							</div>
+							
+								<div class="row">
+									<div id="contenido">
+										<table class="table">
+											<thead>
+												<tr>
+													<th scope="col">Codigo</th>
+													<th scope="col">Descripcion</th>
+													<th scope="col">Cantidad</th>
+													<th scope="col">Precio Unit.</th>
+													<th scope="col">Total x Unidad</th>
+													<th scope="col">I.V.A</th>
+													<th scope="col">Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<s:if test="#session.detalleVenta.size()>0">
+												<s:iterator value="#session.detalleVenta" status="p" >
+												<tr>												
+													<td><s:property value="codigo" /> </td>	
+													<td><s:property value="nombre" /> </td>											
+													<td><s:property value="cantidad" /> </td>
+													<td><s:property value="precioUnitario" /> </td >
+													<td><s:property value="totalPorUnidad" /> </td>											
+													<td><s:property value="iva" /> </td>
+													<td><s:property value="total" /> </td>
+												</tr>												
+												</s:iterator>
+												</s:if>
+											</tbody>
+										</table>
 									</div>
 								</div>
-								&nbsp;
-								<div class="col-md-1">
-									 <s:textfield name="Cantidad"  placeholder="Cantidad" cssClass="form-control" type="text" ></s:textfield>
-							    </div>
-							    <div class="col-md-2">
-							 	  <button type="button" class="btn btn-primary btn-block">
-								   Agregar producto
-								  </button>
-							    </div>
-
-							</div>
-						</div>
-
+								<hr>
 							<div class="row">
-								<table class="table">
-									<thead>
-										<tr>
-											<th scope="col">Producto</th>
-											<th scope="col">Cantidad</th>
-											<th scope="col">Precio unitario</th>
-											<th scope="col">Subtotal</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th scope="row">1</th>
-											<td>Mark</td>
-											<td>Otto</td>
-											<td>@mdo</td>
-										</tr>
-									</tbody>
-								</table>
+								<div class="col-md-3"></div>
+								<div class="col-md-3">	
+									<div class="row">														
+										<div class="col-md-8 text-right">							  	
+										 <strong><a>SUBTOTAL</a></strong> 													
+										</div>
+									</div>
+									<div class="row">														
+										<div class="col-md-8 text-right">							  	
+										 <strong><a>IVA</a></strong> 												
+										</div>
+									</div>
+									<div class="row">	
+																						
+										<div class="col-md-8 text-right">							  	
+										 <strong><a>TOTAL</a></strong> 													
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3" id="totales">
+									<div class="row">
+										<div class="col-md-8 text-right">							  	
+										 <strong><a><s:property value="#session.totalesFactura.totalNetoFactura"/></a></strong> 													
+										</div>
+									</div>
+									<div class="row">														
+										<div class="col-md-8 text-right">							  	
+										 <strong><a><s:property value="#session.totalesFactura.totalIVAFactura"/> </a></strong> 												
+										</div>
+									</div>
+									<div class="row">														
+										<div class="col-md-8 text-right">							  	
+										 <strong><a><s:property value="#session.totalesFactura.totalFactura"/></a></strong> 													
+										</div>
+									</div>
+								</div>
+							</div>							
+							<div class="row">								
+								<div class="col-md-12 text-right">								
+								  <a type="button"  href="cargarCtasCtes?e=true" class="btn btn-primary" style="-webkit-appearance:none;"> Cancelar</a>	&nbsp;						
+								  <s:submit type="button" value="Finalizar Venta" cssClass="btn btn-primary" />							
+								</div>
 							</div>
-						<div class="row">
-							<div class="col-md-12 text-right">
-							  <button type="button" class="btn btn-primary">
-							    Cancelar
-							  </button>	&nbsp;
-							  <button type="button" class="btn btn-primary">
-							    Finalizar venta
-							  </button>
-							</div>
+							</s:form>
 						</div>
-						</s:form>
 					</div>
 				</div>
-			</div>
+			
 		</div>
-	</div>
 	</main>
 	<!-- Essential javascripts for application to work-->
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
+
 	<!-- The javascript plugin to display page loading on top-->
 	<script src="js/plugins/pace.min.js"></script>
 	<!-- Page specific javascripts-->
@@ -257,5 +290,6 @@
 			ga('send', 'pageview');
 		}
 	</script>
+	<script type="text/javascript" src="js/movimiento-detalle.js"></script>
 </body>
 </html>

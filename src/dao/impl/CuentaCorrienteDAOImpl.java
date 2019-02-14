@@ -8,14 +8,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import dao.CuentaCorrienteDAO;
 import dao.DAO;
 import entities.CuentaCorriente;
-
-
 
 public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 	public DAO<CuentaCorriente> dao = new DAO<CuentaCorriente>();
@@ -33,10 +30,9 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 		return log;
 	}
 
-
+	@SuppressWarnings("unchecked")
 	public List<CuentaCorriente> listarCuentaCorrienteDAO() {
 		Session s = dao.getSession();
-		Transaction tx = s.getTransaction();
 		List<CuentaCorriente> ctasCtes = new ArrayList<CuentaCorriente>();
 		try {
 			Criteria c = s.createCriteria(CuentaCorriente.class);
@@ -51,15 +47,14 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 		return ctasCtes;
 	}
 
-	public String getCtaCteId(Integer idCuentaCorriente) {
+	public CuentaCorriente getCtaCteById(Integer idCuentaCorriente) {
 		Session s = dao.getSession();
 		Transaction tx = s.getTransaction();
 		Criteria c = s.createCriteria(CuentaCorriente.class);
-		String ctaCte = null;
+		CuentaCorriente ctaCte = null;
 		try {
 			c.add(Restrictions.eq("idCuentaCorriente", idCuentaCorriente));
-			c.setProjection(Projections.property("apellido"));
-			ctaCte = (String) c.uniqueResult();
+			ctaCte = (CuentaCorriente) c.uniqueResult();
 		} catch (Exception e) {
 			tx.rollback();
 		} finally {
@@ -75,7 +70,7 @@ public class CuentaCorrienteDAOImpl implements CuentaCorrienteDAO {
 
 	@Override
 	public void borrarCuentaCorriente(Integer id) {
-		this.dao.borrarPorId( CuentaCorriente.class, id);
+		this.dao.borrarPorId(CuentaCorriente.class, id);
 	}
 
 }

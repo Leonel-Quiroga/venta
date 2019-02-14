@@ -4,7 +4,6 @@ import bo.impl.CuentaCorrienteBOImpl;
 import bo.impl.LocalidadBOImpl;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.inject.Inject;
 import entities.CuentaCorriente;
 import entities.Localidad;
 import org.apache.log4j.Logger;
@@ -16,7 +15,8 @@ import java.util.Map;
 
 public class CuentasCorrientesAction extends ActionSupport implements SessionAware, Action {
 
-    private Map<String, Object> sesion;
+	private static final long serialVersionUID = -3392835333205482624L;
+	private Map<String, Object> sesion;
     private static Logger log = Logger.getLogger(CuentasCorrientesAction.class);
 
 

@@ -14,7 +14,8 @@ import java.util.Map;
 
 public class ProductosAction  extends ActionSupport implements SessionAware, Action {
 
-    private Map<String, Object> sesion;
+	private static final long serialVersionUID = -6683435494173541127L;
+	private Map<String, Object> sesion;
     private static Logger log = Logger.getLogger(ProductosAction.class);
 
 

@@ -3,7 +3,6 @@ package entities;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-
 public class Producto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -70,6 +69,5 @@ public class Producto implements Serializable {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
-
 
 }

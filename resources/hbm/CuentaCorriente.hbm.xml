@@ -18,7 +18,7 @@
 			<column name="documento" sql-type="Integer" not-null="true" />
 		</property>
 		<property name="saldoOperativo">
-			<column name="saldo_operativo" sql-type="double" not-null="true" />
+			<column name="saldo_operativo" sql-type="Double" not-null="true" />
 		</property>
 		<property name="calle">
 			<column name="calle" sql-type="varchar" not-null="true" />

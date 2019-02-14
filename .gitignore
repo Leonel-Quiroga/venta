@@ -3,3 +3,6 @@
 .idea/
 .settings
 .project
+WebContent/WEB-INF/lib/
+build/
+out/
