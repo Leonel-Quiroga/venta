@@ -22,32 +22,31 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 
 	private static final long serialVersionUID = 2026769441835470521L;
 	private Map<String, Object> sesion;
-	
+
 	private int idProducto, cantidad;
 	private Integer idCuentaCorriente;
 	private Usuario usuario = new Usuario();
 	private Producto producto = new Producto();
 	private CuentaCorriente ctaCte = new CuentaCorriente();
 	private String validaciones;
-	
-	
+
 	private List<CuentaCorriente> listCtasCtes = new ArrayList<CuentaCorriente>();
 	private List<Producto> listProductos = new ArrayList<Producto>();
 	private List<DetalleFacturaDTO> movimientoDetalle = new ArrayList<DetalleFacturaDTO>();
 
 	private DetalleFacturaDTO productoDTO = new DetalleFacturaDTO();
-	
+
 	private ProductoBOImpl productoBO = new ProductoBOImpl();
 	private CuentaCorrienteBOImpl ctasCtesBO = new CuentaCorrienteBOImpl();
 	private MovimientoBOImpl movimientoBO = new MovimientoBOImpl();
-	
-	//e = erase;
+
+	// e = erase;
 	private boolean e;
 
 	public String execute() {
-		if(e){
+		if (e) {
 			sesion.clear();
-			e=!e;
+			e = !e;
 		}
 		cargarCtasCtes();
 		cargarProductos();
@@ -57,57 +56,57 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 
 	@SuppressWarnings("unchecked")
 	public String agregarProducto() {
+
 		if (sesion.containsKey("detalleVenta"))
 			movimientoDetalle = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
-		
-		if (sesion.containsKey("detalleVenta")) {
-			this.setValidaciones("El producto ya se encuentra en lista");
-			return ERROR;
-		}
-		
 
 		producto = productoBO.getProductoByIdBO(idProducto);
 		ctaCte = ctasCtesBO.getCuentaCorrienteByIdBO(idCuentaCorriente);
-		
-		if(getCantidad() > producto.getCantidad()){
+
+		if (getCantidad() > producto.getCantidad()) {
 			return ERROR;
-		} 
-		
+		}
+
 		productoDTO.setIdProducto(producto.getIdProducto());
 		productoDTO.setCodigo(producto.getCodigo());
 		productoDTO.setNombre(producto.getNombre());
 		productoDTO.setCantidad(cantidad);
 		productoDTO.setPrecioUnitario(producto.getPrecioUnitario());
-		productoDTO.setTotalPorUnidad(productoBO.calcularTotalPorUnidad(producto.getPrecioUnitario(),cantidad)); 
+		productoDTO.setTotalPorUnidad(productoBO.calcularTotalPorUnidad(producto.getPrecioUnitario(), cantidad));
 		productoDTO.setIva(productoBO.calcualarIVA(productoDTO.getTotalPorUnidad()));
 		productoDTO.setTotal(productoBO.calcularTotal(productoDTO.getTotalPorUnidad(), productoDTO.getIva()));
 		productoDTO.setTotalNetoFactura(productoBO.calcularNeto(movimientoDetalle, productoDTO.getTotalPorUnidad()));
-		productoDTO.setTotalIVAFactura(productoBO.calcularTotalIVA(movimientoDetalle,productoDTO.getIva()));		
-		productoDTO.setTotalFactura(productoBO.calcularTotalFacturado(productoDTO.getTotalNetoFactura(), productoDTO.getTotalIVAFactura()));				
+		productoDTO.setTotalIVAFactura(productoBO.calcularTotalIVA(movimientoDetalle, productoDTO.getIva()));
+		productoDTO.setTotalFactura(
+				productoBO.calcularTotalFacturado(productoDTO.getTotalNetoFactura(), productoDTO.getTotalIVAFactura()));
+
+		// HAY QUE MODIFICAR ESTO
+		// if (sesion.containsKey("detalleVenta")) {
+		// this.setValidaciones("El producto ya se encuentra en lista");
+		// return ERROR;
+		// }
 
 		movimientoDetalle.add(productoDTO);
-		
-		
-		
-		sesion.put("idCuentaCorriente",ctaCte);
+
+		sesion.put("idCuentaCorriente", ctaCte);
 		sesion.put("detalleVenta", movimientoDetalle);
-		sesion.put("totalesFactura",productoDTO);
+		sesion.put("totalesFactura", productoDTO);
 
 		return SUCCESS;
 	}
-	
+
 	public String facturar() throws SQLException {
 		if (sesion.containsKey("detalleVenta"))
 			movimientoDetalle = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
 		ctaCte = (CuentaCorriente) sesion.get("idCuentaCorriente");
-			
+
 		movimientoBO.generarFactura(ctaCte, movimientoDetalle);
 		sesion.remove("idCuentaCorriente");
 		sesion.remove("detalleVenta");
 		sesion.remove("totalesFactura");
 		return SUCCESS;
 	}
-	
+
 	private void cargarCtasCtes() {
 		listCtasCtes = ctasCtesBO.listarCuentasCorrientes();
 	}
@@ -116,12 +115,6 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 		listProductos = productoBO.listarProductos();
 	}
 
-	
-	
-	
-	
-	
-	
 	public List<Producto> getListProductos() {
 		return listProductos;
 	}
@@ -198,7 +191,7 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 	public void setIdCuentaCorriente(Integer idCuentaCorriente) {
 		this.idCuentaCorriente = idCuentaCorriente;
 	}
-	
+
 	public List<DetalleFacturaDTO> getMovimientoDetalle() {
 		return movimientoDetalle;
 	}

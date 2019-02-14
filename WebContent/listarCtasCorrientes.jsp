@@ -70,7 +70,6 @@
                 <li><a class="treeview-item"
                        href="listaProductos"
                        rel="noopener"><i class="icon fa fa-circle-o"></i> Lista de productos</a></li>
-
             </ul></li>
         <li class="treeview"><a class="app-menu__item" href="#"
                                 data-toggle="treeview"><i

@@ -8,7 +8,7 @@
 			<column name="idproducto" sql-type="Integer" not-null="true" />
 			<generator class="increment"></generator>
 		</id>
-		<property name="codigo"  type="java.lang.Integer">
+		<property name="codigo" type="java.lang.Integer">
 			<column name="codigo" sql-type="Integer" not-null="true" />
 		</property>
 				<property name="nombre"  type="java.lang.String">
