@@ -8,6 +8,7 @@ public class FormaDePago implements Serializable {
 
 	private Integer idFormaDePago;
 	private String desccripcion;
+	
 	public Integer getIdFormaDePago() {
 		return idFormaDePago;
 	}

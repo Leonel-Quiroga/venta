@@ -6,10 +6,13 @@ import entities.Localidad;
 
 import java.util.List;
 
-public class LocalidadBOImpl {
+import bo.LocalidadBO;
+
+public class LocalidadBOImpl implements LocalidadBO {
 
     private LocalidadDAO localidadDAO = new LocalidadDAOImpl();
 
+    @Override
     public List<Localidad> listarLocalidadeds(){
         return localidadDAO.listarLocalidades();
     }

@@ -6,12 +6,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import dao.DAO;
 import dao.ProductoDAO;
-import entities.CuentaCorriente;
 import entities.Producto;
 
 public class ProductoDAOImpl implements ProductoDAO {
@@ -23,9 +22,9 @@ public class ProductoDAOImpl implements ProductoDAO {
 		return log;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Producto> listarProductosDAO() {
 		Session s = dao.getSession();
-		Transaction tx = s.getTransaction();
 		List<Producto> prouctos = new ArrayList<Producto>();
 		try {
 			Criteria c = s.createCriteria(Producto.class);
@@ -38,6 +37,23 @@ public class ProductoDAOImpl implements ProductoDAO {
 			dao.cerrarSession();
 		}
 		return prouctos;
+	}
+
+	@Override
+	public Producto getProductoById(Integer id) {
+		Session s = dao.getSession();
+		Producto p = new Producto();
+		try {
+			Criteria c = s.createCriteria(Producto.class);
+			c.add(Restrictions.eq("idProducto", id));
+			p = (Producto) c.uniqueResult();
+		} catch (Exception e) {
+			log.error(e);
+			e.printStackTrace();
+		} finally {
+			dao.cerrarSession();
+		}
+		return p;
 	}
 
 	@Override

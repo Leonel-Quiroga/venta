@@ -33,6 +33,22 @@
 			<result name="success" >index.jsp</result>
 			<result name="error">vistas/login.jsp</result>
 		</action>
+		
+		<action name="logout" method="logout" class="actions.LoginAction">
+			<interceptor-ref name="defaultStack" />
+			<result name="success">vistas/login.jsp</result>
+			<result name="error">login.jsp</result>
+		</action>
+		<action name="agregarProducto" method="agregarProducto" class="actions.MovimientoAction">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="noCache">true</param>
+			</result>
+		</action>
+		<action name="facturar" method="facturar" class="actions.MovimientoAction">
+			<result name="success" type="redirect">cargarCtasCtes</result>
+			<result name="error">vistas/login.jsp</result>
+		</action>
 		<!--actions cuenta corriente-->
 		<action name="altaCtasCtes" method="guardarCtaCorriente" class="actions.CuentasCorrientesAction">
 			<result name="success" type="redirect" >listaCtaCorrientes</result>
@@ -69,15 +85,8 @@
 		</action>
 		
 		<action name="editarProducto" method="editarProducto" class="actions.ProductosAction">
-			<result name="success" type="redrect">listaProductos</result>
+			<result name="success" type="redirect">listaProductos</result>
 		</action>
-
-
 		
-<!-- 		<action name="logout" method="logout" class="ventas.Action.LoginAction"> -->
-<!-- 			<interceptor-ref name="defaultStack" /> -->
-<!-- 			<result name="success">login.jsp</result> -->
-<!-- 			<result name="error">login.jsp</result> -->
-<!-- 		</action> -->
 	</package>
 </struts>
