@@ -5,3 +5,6 @@ WebContent/WEB-INF/lib/
 .idea/
 .settings
 .project
+WebContent/WEB-INF/lib/
+build/
+out/
