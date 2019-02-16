@@ -11,8 +11,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
-//TODO: GENERAR UNA CARPETA DE TAGS EN WEB-INF SEPARAR LOS ELEMENTOS DE JSP REPETITIVOS EN COMPONENTES COMO NAVBAR SIDEBAR ETC, Y USARLOS POR SEPARADO EN CADA ELEMENTO
-// https://stackoverflow.com/questions/1296235/jsp-tricks-to-make-templating-easier#comment-1127458
 
 public class LocalidadDAOImpl implements LocalidadDAO {
     public DAO<Localidad> dao = new DAO<>();
