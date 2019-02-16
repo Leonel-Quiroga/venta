@@ -1,19 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@page session='true'%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<html>
-<head>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Main CSS-->
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <!-- Font-icon css-->
-      <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <title>Login</title>
-  </head>
-  <body>
+<%@ taglib prefix="b" tagdir="/WEB-INF/tags" %>
+<b:base>
     <section class="material-half-bg">
       <div class="cover"></div>
     </section>
@@ -36,12 +25,4 @@
         </s:form>
       </div>
     </section>
-    <!-- Essential javascripts for application to work-->
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
-    <!-- The javascript plugin to display page loading on top-->
-    <script src="js/plugins/pace.min.js"></script>
-</body>
-</html>
+</b:base>

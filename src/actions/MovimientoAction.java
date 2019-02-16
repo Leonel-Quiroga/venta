@@ -64,6 +64,10 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 		ctaCte = ctasCtesBO.getCuentaCorrienteByIdBO(idCuentaCorriente);
 
 		if (getCantidad() > producto.getCantidad()) {
+			validaciones =  String.format("Usted dispone de una stock de %d %s.",
+					producto.getCantidad(),
+					producto.getNombre());
+			sesion.put("validaciones", validaciones);
 			return ERROR;
 		}
 

@@ -9,17 +9,17 @@ function agregarProducto() {
 				'idCuentaCorriente': $('#idCuentaCorriente').val(),
 				'idProducto' : $('#producto').val(),
 				'cantidad' : $('#cantidad').val(),
-				'validaciones': $('#no-stock').val(),
+				'validaciones': $('#no-stock').val()
 			},
 			success : function(data) {
-				$('#contenido').load(location.href.replace("true", "false") + ' #contenido'),
-				$('#totales').load(location.href.replace("true", "false") + ' #totales'),
-				$('#no-stock').css('visibility', 'hidden')
-			
+				$('#contenido').load(location.href + ' #contenido');
+				$('#totales').load(location.href + ' #totales');
+				$('#error-div').hide();
 			},
 			error : function(data) {
-				$('#no-stock').load(location.href.replace("true", "false") + ' #no-stock')
-				
-			},
+				var noStock = $('#error-div');
+                noStock.load(location.href + ' #error-message');
+                noStock.show();
+			}
 		});
 }
