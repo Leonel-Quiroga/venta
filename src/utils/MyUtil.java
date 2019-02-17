@@ -26,6 +26,10 @@ public class MyUtil implements SessionAware {
 		}
 	}
 	
+	public static Double dNullToZero(Double val) {
+		return val == null?0:val;
+	}
+	
 	@Override
 	public void setSession(Map<String, Object> map) {
 		this.sesion = map;

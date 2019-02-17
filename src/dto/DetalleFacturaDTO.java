@@ -10,36 +10,6 @@ public class DetalleFacturaDTO {
 	private Double iva;
 	private Double subtotal;
 	private Double total;
-	private Double totalNetoFactura;
-	private Double totalIVAFactura;
-	private Double totalFactura;
-
-
-
-	
-	public Double getTotalNetoFactura() {
-		return totalNetoFactura;
-	}
-
-	public void setTotalNetoFactura(Double totalNetoFactura) {
-		this.totalNetoFactura = totalNetoFactura;
-	}
-
-	public Double getTotalIVAFactura() {
-		return totalIVAFactura;
-	}
-
-	public void setTotalIVAFactura(Double totalIVAFactura) {
-		this.totalIVAFactura = totalIVAFactura;
-	}
-
-	public Double getTotalFactura() {
-		return totalFactura;
-	}
-
-	public void setTotalFactura(Double totalFactura) {
-		this.totalFactura = totalFactura;
-	}
 
 	public String getNombre() {
 		return nombre;
