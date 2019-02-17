@@ -22,12 +22,12 @@
 									<span id="error-message" ><s:property value="#session.validaciones" /></span>
 								</div>
 								<div class="row">
-									<div class="col-md-4">									
+									<div class="col-md-4">
 										  <s:select cssClass="form-control line" onselect="" headerKey="-1"
 													headerValue="Seleccionar Cta Cte" list="listCtasCtes"
 													listKey="idCuentaCorriente" listValue="apellido + ' ' + nombre"
-													name="listCtasCtes.idCuentaCorriente" id="idCuentaCorriente"/>			   					  									
-									</div>								
+													name="listCtasCtes.idCuentaCorriente" id="idCuentaCorriente"/>
+									</div>
 									<div class="col-md-3">
 										<div class="dropdown">
 											  <s:select cssClass="form-control line" onselect="" headerKey="-1"

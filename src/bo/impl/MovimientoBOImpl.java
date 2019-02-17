@@ -12,30 +12,61 @@ import dto.DetalleFacturaDTO;
 import dto.FacturaDTO;
 import entities.CuentaCorriente;
 import utils.MyUtil;
+import bo.impl.ProductoBOImpl;
 
 public class MovimientoBOImpl implements MovimeintoBO {
-	private FacturaDTO factura = new FacturaDTO();
-	private DetalleFacturaDTO df = new DetalleFacturaDTO();
 	private MovimientoDAO movimiento = new MovimientoDAOImpl();
+	private ProductoBOImpl productoBO = new ProductoBOImpl();
 	private Date date = new Date();
-	private MyUtil mu = new MyUtil();
 	private Timestamp t;
 
 	@Override
-	public void generarFactura(CuentaCorriente idCC, List<DetalleFacturaDTO> listDF) throws SQLException {
-
+	public void generarFactura(CuentaCorriente idCC, List<DetalleFacturaDTO> listDF, FacturaDTO f) throws SQLException {
+		FacturaDTO factura = new FacturaDTO();
 		factura.setIdCuentaCorriente(idCC.getIdCuentaCorriente());
-		df = listDF.get(listDF.size() - 1);
-		factura.setSubtotal(df.getTotalNetoFactura());
-		factura.setIva(df.getTotalIVAFactura());
-		factura.setDebito(df.getTotalFactura());
-		factura.setTotal(df.getTotalFactura());
+		factura.setSubtotal(f.getSubtotal());
+		factura.setIva(f.getIva());
+		factura.setTotal(f.getTotal());
+		factura.setDebito(f.getTotal());
 		factura.setListDetalleFactura(listDF);
 		factura.setEmision(new Timestamp(date.getTime()));
-		t = new Timestamp(mu.sumarRestarDiasFecha(date, 10).getTime());
+		t = new Timestamp(MyUtil.sumarRestarDiasFecha(date, 10).getTime());
 		factura.setVencimiento(t);
 		movimiento.insertarVenta(factura);
+	}
 
+	public FacturaDTO totalAfacturar(List<DetalleFacturaDTO> listDF) {
+		FacturaDTO f = new FacturaDTO();
+		Double s = 0.0;
+		Double i = 0.0;
+		Double t = 0.0;
+		for (DetalleFacturaDTO df : listDF) {
+			s += df.getTotalPorUnidad();
+			i += df.getIva();
+			t += df.getTotal();
+		}
+		f.setSubtotal(s);
+		f.setIva(i);
+		f.setTotal(t);
+		f.setDebito(f.getTotal());
+		return f;
+	}
+
+	public boolean validarStock(int cantCargada, int cantProducto) {
+		return cantCargada > cantProducto ? true : false;
+	}
+
+	public DetalleFacturaDTO generarDetalle(Integer ip, Integer cod, String n, Integer can, Double pu) {
+		DetalleFacturaDTO df = new DetalleFacturaDTO();
+		df.setIdProducto(ip);
+		df.setCodigo(cod);
+		df.setNombre(n);
+		df.setCantidad(can);
+		df.setPrecioUnitario(pu);
+		df.setTotalPorUnidad(productoBO.calcularTotalPorUnidad(pu, can));
+		df.setIva(productoBO.calcualarIVA(df.getTotalPorUnidad()));
+		df.setTotal(productoBO.calcularTotal(df.getTotalPorUnidad(), df.getIva()));
+		return df;
 	}
 
 }

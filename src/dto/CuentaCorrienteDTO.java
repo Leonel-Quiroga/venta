@@ -6,6 +6,7 @@ public class CuentaCorrienteDTO {
 	private String nombre;
 	private Integer cuil;
 	private String calle;
+	
 	public Integer getIdCuentaCorriente() {
 		return idCuentaCorriente;
 	}

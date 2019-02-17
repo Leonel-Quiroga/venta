@@ -32,8 +32,6 @@ public class FacturaDTO {
 	public String getCodigoDeBarra() {
 		return codigoDeBarra;
 	}
-	
-	
 
 	public String getApellido() {
 		return apellido;

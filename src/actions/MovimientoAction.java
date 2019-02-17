@@ -14,6 +14,7 @@ import bo.impl.CuentaCorrienteBOImpl;
 import bo.impl.MovimientoBOImpl;
 import bo.impl.ProductoBOImpl;
 import dto.DetalleFacturaDTO;
+import dto.FacturaDTO;
 import entities.CuentaCorriente;
 import entities.Producto;
 import entities.Usuario;
@@ -23,18 +24,22 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 	private static final long serialVersionUID = 2026769441835470521L;
 	private Map<String, Object> sesion;
 
+	//CAMPOS FORM
 	private int idProducto, cantidad;
 	private Integer idCuentaCorriente;
-	private Usuario usuario = new Usuario();
+	private List<CuentaCorriente> listCtasCtes = new ArrayList<CuentaCorriente>();
 	private Producto producto = new Producto();
+	private Usuario usuario = new Usuario();
+
+
 	private CuentaCorriente ctaCte = new CuentaCorriente();
 	private String validaciones;
 
-	private List<CuentaCorriente> listCtasCtes = new ArrayList<CuentaCorriente>();
-	private List<Producto> listProductos = new ArrayList<Producto>();
-	private List<DetalleFacturaDTO> movimientoDetalle = new ArrayList<DetalleFacturaDTO>();
 
-	private DetalleFacturaDTO productoDTO = new DetalleFacturaDTO();
+	private List<Producto> listProductos = new ArrayList<Producto>();
+	private List<DetalleFacturaDTO> listDetalleFactura = new ArrayList<DetalleFacturaDTO>();
+	private FacturaDTO totalAfacturar = new FacturaDTO();
+	private DetalleFacturaDTO detalleFacturaDTO = new DetalleFacturaDTO();
 
 	private ProductoBOImpl productoBO = new ProductoBOImpl();
 	private CuentaCorrienteBOImpl ctasCtesBO = new CuentaCorrienteBOImpl();
@@ -50,65 +55,69 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 		}
 		cargarCtasCtes();
 		cargarProductos();
-
 		return SUCCESS;
 	}
 
 	@SuppressWarnings("unchecked")
 	public String agregarProducto() {
-
-		if (sesion.containsKey("detalleVenta"))
-			movimientoDetalle = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
-
-		producto = productoBO.getProductoByIdBO(idProducto);
+		//Obtengo cta. cte.
 		ctaCte = ctasCtesBO.getCuentaCorrienteByIdBO(idCuentaCorriente);
 
-		if (getCantidad() > producto.getCantidad()) {
-			validaciones =  String.format("Usted dispone de una stock de %d %s.",
-					producto.getCantidad(),
-					producto.getNombre());
-			sesion.put("validaciones", validaciones);
-			return ERROR;
-		}
+		//Obtengo producto
+		producto = productoBO.getProductoByIdBO(idProducto);
 
-		productoDTO.setIdProducto(producto.getIdProducto());
-		productoDTO.setCodigo(producto.getCodigo());
-		productoDTO.setNombre(producto.getNombre());
-		productoDTO.setCantidad(cantidad);
-		productoDTO.setPrecioUnitario(producto.getPrecioUnitario());
-		productoDTO.setTotalPorUnidad(productoBO.calcularTotalPorUnidad(producto.getPrecioUnitario(), cantidad));
-		productoDTO.setIva(productoBO.calcualarIVA(productoDTO.getTotalPorUnidad()));
-		productoDTO.setTotal(productoBO.calcularTotal(productoDTO.getTotalPorUnidad(), productoDTO.getIva()));
-		productoDTO.setTotalNetoFactura(productoBO.calcularNeto(movimientoDetalle, productoDTO.getTotalPorUnidad()));
-		productoDTO.setTotalIVAFactura(productoBO.calcularTotalIVA(movimientoDetalle, productoDTO.getIva()));
-		productoDTO.setTotalFactura(
-				productoBO.calcularTotalFacturado(productoDTO.getTotalNetoFactura(), productoDTO.getTotalIVAFactura()));
+		//Si hay poductos obtengo la lista
+		if (sesion.containsKey("detalleVenta")) listDetalleFactura = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
 
-		// HAY QUE MODIFICAR ESTO
-		// if (sesion.containsKey("detalleVenta")) {
-		// this.setValidaciones("El producto ya se encuentra en lista");
-		// return ERROR;
-		// }
+		//Si se encuentra en la lista arroja un mensaje
+//		 if (sesion.containsKey("detalleVenta")) {
+//			 setValidaciones("El producto ya se encuentra en lista");
+//			 return ERROR;
+//		 }
 
-		movimientoDetalle.add(productoDTO);
+		//Evaluo el stock del producto
+		if (movimientoBO.validarStock(this.getCantidad(), producto.getCantidad())) return ERROR;
+
+		//Cargo valores del detalle
+		detalleFacturaDTO = movimientoBO.generarDetalle(producto.getIdProducto(), producto.getCodigo(), producto.getNombre(), cantidad, producto.getPrecioUnitario());
+
+		//Cargo lista de productos
+		listDetalleFactura.add(detalleFacturaDTO);
+
+		//Calculo total a facturar
+		totalAfacturar = movimientoBO.totalAfacturar(listDetalleFactura);
 
 		sesion.put("idCuentaCorriente", ctaCte);
-		sesion.put("detalleVenta", movimientoDetalle);
-		sesion.put("totalesFactura", productoDTO);
+		sesion.put("totalesFactura", detalleFacturaDTO);
+		sesion.put("detalleVenta", listDetalleFactura);
+		sesion.put("totalAfacturar", totalAfacturar);
+
 
 		return SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String facturar() throws SQLException {
 		if (sesion.containsKey("detalleVenta"))
-			movimientoDetalle = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
+			listDetalleFactura = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
+
+		if (sesion.containsKey("totalAfacturar"))
+			totalAfacturar = (FacturaDTO) sesion.get("totalAfacturar");
+
 		ctaCte = (CuentaCorriente) sesion.get("idCuentaCorriente");
 
-		movimientoBO.generarFactura(ctaCte, movimientoDetalle);
-		sesion.remove("idCuentaCorriente");
-		sesion.remove("detalleVenta");
-		sesion.remove("totalesFactura");
+		movimientoBO.generarFactura(ctaCte, listDetalleFactura, totalAfacturar);
+
+		this.limpiarVariablesDeSesion();
+
 		return SUCCESS;
+	}
+
+	private void limpiarVariablesDeSesion() {
+		sesion.remove("idCuentaCorriente", ctaCte);
+		sesion.remove("totalesFactura", detalleFacturaDTO);
+		sesion.remove("detalleVenta", listDetalleFactura);
+		sesion.remove("totalAfacturar", totalAfacturar);
 	}
 
 	private void cargarCtasCtes() {
@@ -181,11 +190,11 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 	}
 
 	public DetalleFacturaDTO getPoductoDTO() {
-		return productoDTO;
+		return detalleFacturaDTO;
 	}
 
-	public void setPoductoDTO(DetalleFacturaDTO productoDTO) {
-		this.productoDTO = productoDTO;
+	public void setPoductoDTO(DetalleFacturaDTO detalleFacturaDTO) {
+		this.detalleFacturaDTO = detalleFacturaDTO;
 	}
 
 	public Integer getIdCuentaCorriente() {
@@ -197,11 +206,7 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 	}
 
 	public List<DetalleFacturaDTO> getMovimientoDetalle() {
-		return movimientoDetalle;
-	}
-
-	public void setMovimientoDetalle(List<DetalleFacturaDTO> movimientoDetalle) {
-		this.movimientoDetalle = movimientoDetalle;
+		return listDetalleFactura;
 	}
 
 	public Producto getProducto() {
@@ -213,11 +218,11 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 	}
 
 	public DetalleFacturaDTO getProductoDTO() {
-		return productoDTO;
+		return detalleFacturaDTO;
 	}
 
-	public void setProductoDTO(DetalleFacturaDTO productoDTO) {
-		this.productoDTO = productoDTO;
+	public void setProductoDTO(DetalleFacturaDTO detalleFacturaDTO) {
+		this.detalleFacturaDTO = detalleFacturaDTO;
 	}
 
 	public boolean isE() {
