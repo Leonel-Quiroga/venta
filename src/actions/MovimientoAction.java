@@ -76,7 +76,13 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 //		 }
 
 		//Evaluo el stock del producto
-		if (movimientoBO.validarStock(this.getCantidad(), producto.getCantidad())) return ERROR;
+		if (movimientoBO.validarStock(this.getCantidad(), producto.getCantidad())){
+			validaciones =  String.format("Usted dispone de una stock de %d %s.",
+					producto.getCantidad(),
+					producto.getNombre());
+			sesion.put("validaciones", validaciones);
+			return ERROR;
+		}
 
 		//Cargo valores del detalle
 		detalleFacturaDTO = movimientoBO.generarDetalle(producto.getIdProducto(), producto.getCodigo(), producto.getNombre(), cantidad, producto.getPrecioUnitario());
