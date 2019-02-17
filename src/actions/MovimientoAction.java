@@ -70,10 +70,10 @@ public class MovimientoAction extends ActionSupport implements SessionAware, Act
 		if (sesion.containsKey("detalleVenta")) listDetalleFactura = (List<DetalleFacturaDTO>) sesion.get("detalleVenta");
 		
 		//Si se encuentra en la lista arroja un mensaje
-		 if (sesion.containsKey("detalleVenta")) {
-			 setValidaciones("El producto ya se encuentra en lista");
-			 return ERROR;
-		 }
+//		 if (sesion.containsKey("detalleVenta")) {
+//			 setValidaciones("El producto ya se encuentra en lista");
+//			 return ERROR;
+//		 }
 		
 		//Evaluo el stock del producto
 		if (movimientoBO.validarStock(this.getCantidad(), producto.getCantidad())) return ERROR;
